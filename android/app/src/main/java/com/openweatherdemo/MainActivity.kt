@@ -1,5 +1,7 @@
 package com.openweatherdemo
 
+import android.os.Bundle
+import androidx.core.view.WindowCompat
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
@@ -13,6 +15,11 @@ class MainActivity : ReactActivity() {
    */
   override fun getMainComponentName(): String = "OpenWeatherDemo"
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(null)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+    }
+    
   /**
    * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
    * which allows you to enable New Architecture with a single boolean flags [fabricEnabled]

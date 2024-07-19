@@ -1192,6 +1192,8 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - RNSVG (15.4.0):
+    - React-Core
   - SocketRocket (0.7.0)
   - Yoga (0.0.0)
 
@@ -1255,6 +1257,7 @@ DEPENDENCIES:
   - RNBootSplash (from `../node_modules/react-native-bootsplash`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSVG (from `../node_modules/react-native-svg`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -1377,6 +1380,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-async-storage/async-storage"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1438,6 +1443,7 @@ SPEC CHECKSUMS:
   RNBootSplash: e025d4ee98d942ee6c8b495a6fe66339a6b5f6dd
   RNCAsyncStorage: ec53e44dc3e75b44aa2a9f37618a49c3bc080a7a
   RNScreens: 5aeecbb09aa7285379b6e9f3c8a3c859bb16401c
+  RNSVG: cb24fb322de8c1ebf59904e7aca0447bb8dbed5a
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 04f1db30bb810187397fa4c37dd1868a27af229c
 

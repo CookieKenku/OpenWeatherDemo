@@ -1,6 +1,8 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { RootStack } from 'src/navigation/RootStack';
 import { getCurrentCityName } from 'src/api';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { StatusBar } from 'react-native';
 
 // type SectionProps = PropsWithChildren<{
 //   title: string;
@@ -15,9 +17,16 @@ function App(): React.JSX.Element {
   // }, []);
 
   return (
-    <NavigationContainer>
-      <RootStack />
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <StatusBar
+        backgroundColor={'transparent'}
+        barStyle={'dark-content'}
+        translucent
+      />
+      <NavigationContainer>
+        <RootStack />
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 
