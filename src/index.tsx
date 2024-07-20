@@ -1,5 +1,7 @@
-import { StatusBar } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Alert, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import Geolocation from '@react-native-community/geolocation';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { RootStack } from 'src/navigation/RootStack';
 
@@ -7,7 +9,29 @@ import { RootStack } from 'src/navigation/RootStack';
 //   title: string;
 // }>;
 
+if (__DEV__) {
+  require('./reactotron.config');
+}
+
 function App(): React.JSX.Element {
+  const getCurrentPosition = () => {
+    Geolocation.getCurrentPosition(
+      pos => {
+        setPosition(JSON.stringify(pos));
+      },
+      error => Alert.alert('GetCurrentPosition Error', JSON.stringify(error)),
+      { enableHighAccuracy: true },
+    );
+  };
+
+  const [position, setPosition] = useState<string | null>(null);
+
+  console.log(position);
+
+  useEffect(() => {
+    getCurrentPosition();
+  }, []);
+
   return (
     <SafeAreaProvider>
       <StatusBar
