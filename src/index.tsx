@@ -1,7 +1,7 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { RootStack } from 'src/navigation/RootStack';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { RootStack } from 'src/navigation/RootStack';
 
 // type SectionProps = PropsWithChildren<{
 //   title: string;

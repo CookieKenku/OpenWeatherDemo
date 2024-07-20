@@ -1,14 +1,14 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { SearchBarCommands, SearchBarProps } from 'react-native-screens';
-import { useDeferredValue } from 'src/helpers/useDeferredValue';
 import { getWeatherByCityName } from 'src/api';
+import { useDeferredValue } from 'src/helpers/useDeferredValue';
 import { WeatherLandingView } from './WeatherLandingView';
 
 const MIN_CHARS = 3;
 
 export const WeatherLanding = () => {
-  const { setOptions } = useNavigation();
+  const { setOptions, navigate } = useNavigation();
 
   const inputRef = useRef<SearchBarCommands>();
 
@@ -41,5 +41,5 @@ export const WeatherLanding = () => {
         console.log(ok, data, problem);
       })();
   }, [deferredSearchValue]);
-  return <WeatherLandingView />;
+  return <WeatherLandingView onPress={() => navigate('WeatherDetails')} />;
 };

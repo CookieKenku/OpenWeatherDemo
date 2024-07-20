@@ -1,9 +1,11 @@
-import { Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
-export const WeatherLandingView = () => {
+export const WeatherLandingView = ({ onPress }) => {
   return (
     <View style={{ flex: 1 }}>
-      <Text>{'LOL'}</Text>
+      <Pressable onPress={onPress}>
+        <Text>{'LOL'}</Text>
+      </Pressable>
     </View>
   );
 };
