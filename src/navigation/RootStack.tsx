@@ -12,10 +12,10 @@ export const RootStack = () => {
       screenOptions={{
         headerTitleAlign: 'center',
         headerTransparent: false,
-        headerBackVisible: false,
-        gestureEnabled: false,
+        // headerBackVisible: false,
+        // gestureEnabled: false,
         headerTitle: HeaderLogo,
-        animation: 'fade',
+        // animation: 'slide_from_left',
       }}
     >
       <Stack.Screen component={WeatherLanding} name="WeatherLanding" />

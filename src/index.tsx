@@ -1,6 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { RootStack } from 'src/navigation/RootStack';
-import { getCurrentCityName } from 'src/api';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'react-native';
 
@@ -9,13 +8,6 @@ import { StatusBar } from 'react-native';
 // }>;
 
 function App(): React.JSX.Element {
-  // useEffect(() => {
-  //   (async () => {
-  //     const { ok, data, problem } = await getCurrentCityName();
-  //     console.log(ok, data, problem);
-  //   })();
-  // }, []);
-
   return (
     <SafeAreaProvider>
       <StatusBar
