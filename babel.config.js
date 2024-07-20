@@ -8,6 +8,7 @@ module.exports = {
         alias: {
           assets: './assets',
           src: './src',
+          'moti/skeleton': 'moti/skeleton/react-native-linear-gradient',
         },
       },
     ],

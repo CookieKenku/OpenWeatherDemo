@@ -1,8 +1,9 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { skipToken, useQuery } from '@tanstack/react-query';
 import { SearchBarCommands, SearchBarProps } from 'react-native-screens';
-import { getWeatherByCityName } from 'src/api';
-import { useDeferredValue } from 'src/helpers/useDeferredValue';
+import { getWeatherByCityName, getWeatherByPosition } from 'src/api';
+import { useDebouncedValue } from 'src/helpers/useDebouncedValue';
 import { useGeolocation } from 'src/components';
 import { WeatherLandingView } from './WeatherLandingView';
 
@@ -15,7 +16,10 @@ export const WeatherLanding = () => {
 
   const [inputText, setInputText] = useState('');
 
-  const deferredSearchValue = useDeferredValue(inputText, inputText ? 1000 : 0);
+  const deferredSearchValue = useDebouncedValue(
+    inputText,
+    inputText ? 1000 : 0,
+  );
 
   useLayoutEffect(() => {
     setOptions({
@@ -34,17 +38,40 @@ export const WeatherLanding = () => {
     });
   }, [setOptions]);
 
-  useEffect(() => {
-    if (position?.latitude && position?.longitude) console.tron('haha');
-  }, [position]);
+  // const { isLoading: isGeocationWeatherLoading, data: geolocationWeather } =
+  //   useQuery({
+  //     queryKey: ['geolocationWeather', position],
+  //     queryFn: position
+  //       ? async () =>
+  //           await getWeatherByPosition({
+  //             lat: position.latitude,
+  //             lon: position.longitude,
+  //           })
+  //       : skipToken,
+  //   });
+
+  const { isLoading: isSearchLocationLoading, data: searchLocationWeather } =
+    useQuery({
+      queryKey: ['searchLocationWeather', deferredSearchValue],
+      queryFn: deferredSearchValue
+        ? async () => await getWeatherByCityName(deferredSearchValue)
+        : skipToken,
+    });
+
+  // useEffect(() => {
+  //   console.tron(geolocationWeather);
+  // }, [geolocationWeather]);
 
   useEffect(() => {
-    if (deferredSearchValue.length >= MIN_CHARS)
-      (async () => {
-        const { ok, data, problem } =
-          await getWeatherByCityName(deferredSearchValue);
-        console.tron(ok, data, problem);
-      })();
-  }, [deferredSearchValue]);
-  return <WeatherLandingView onPress={() => navigate('WeatherDetails')} />;
+    console.tron(searchLocationWeather);
+  }, [searchLocationWeather]);
+  // useEffect(() => {
+  //   if (deferredSearchValue.length >= MIN_CHARS)
+  //     (async () => {
+  //       const { ok, data, problem } =
+  //         await getWeatherByCityName(deferredSearchValue);
+  //       console.tron(ok, data, problem);
+  //     })();
+  // }, [deferredSearchValue]);
+  return <WeatherLandingView isGeocationWeatherLoading />;
 };

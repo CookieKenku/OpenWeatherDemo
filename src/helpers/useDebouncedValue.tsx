@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export const useDeferredValue = (value: string, delay: number) => {
+export const useDebouncedValue = (value: string, delay: number) => {
   const [deferredValue, setDeferredValue] = useState(value);
 
   useEffect(() => {
