@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
-import { Alert, StatusBar } from 'react-native';
+import { useCallback } from 'react';
+import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import Geolocation from '@react-native-community/geolocation';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import BootSplash from 'react-native-bootsplash';
 import { RootStack } from 'src/navigation/RootStack';
-
+import { GeolocationProvider } from './components';
 // type SectionProps = PropsWithChildren<{
 //   title: string;
 // }>;
@@ -14,22 +14,8 @@ if (__DEV__) {
 }
 
 function App(): React.JSX.Element {
-  const getCurrentPosition = () => {
-    Geolocation.getCurrentPosition(
-      pos => {
-        setPosition(JSON.stringify(pos));
-      },
-      error => Alert.alert('GetCurrentPosition Error', JSON.stringify(error)),
-      { enableHighAccuracy: true },
-    );
-  };
-
-  const [position, setPosition] = useState<string | null>(null);
-
-  console.log(position);
-
-  useEffect(() => {
-    getCurrentPosition();
+  const onNavigatorReady = useCallback(() => {
+    BootSplash.hide({ fade: true });
   }, []);
 
   return (
@@ -39,9 +25,11 @@ function App(): React.JSX.Element {
         barStyle={'dark-content'}
         translucent
       />
-      <NavigationContainer>
-        <RootStack />
-      </NavigationContainer>
+      <GeolocationProvider>
+        <NavigationContainer onReady={onNavigatorReady}>
+          <RootStack />
+        </NavigationContainer>
+      </GeolocationProvider>
     </SafeAreaProvider>
   );
 }

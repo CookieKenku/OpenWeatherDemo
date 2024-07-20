@@ -3,14 +3,15 @@ import { useNavigation } from '@react-navigation/native';
 import { SearchBarCommands, SearchBarProps } from 'react-native-screens';
 import { getWeatherByCityName } from 'src/api';
 import { useDeferredValue } from 'src/helpers/useDeferredValue';
+import { useGeolocation } from 'src/components';
 import { WeatherLandingView } from './WeatherLandingView';
 
 const MIN_CHARS = 3;
 
 export const WeatherLanding = () => {
-  const { setOptions, navigate } = useNavigation();
-
   const inputRef = useRef<SearchBarCommands>();
+  const { setOptions, navigate } = useNavigation();
+  const { position } = useGeolocation();
 
   const [inputText, setInputText] = useState('');
 
@@ -34,11 +35,15 @@ export const WeatherLanding = () => {
   }, [setOptions]);
 
   useEffect(() => {
+    if (position?.latitude && position?.longitude) console.tron('haha');
+  }, [position]);
+
+  useEffect(() => {
     if (deferredSearchValue.length >= MIN_CHARS)
       (async () => {
         const { ok, data, problem } =
           await getWeatherByCityName(deferredSearchValue);
-        console.log(ok, data, problem);
+        console.tron(ok, data, problem);
       })();
   }, [deferredSearchValue]);
   return <WeatherLandingView onPress={() => navigate('WeatherDetails')} />;
