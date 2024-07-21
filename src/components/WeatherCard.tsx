@@ -1,3 +1,4 @@
+import { PropsWithChildren } from 'react';
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { LinearTransition } from 'react-native-reanimated';
 import FastImage from 'react-native-fast-image';
@@ -7,62 +8,93 @@ import { AnimatedPressable } from './AnimatedPressable';
 import { SvgAsset } from './SvgAsset';
 import { TempAmountText } from './TempAmountText';
 
+type WeatherCardSectionProps = {
+  sectionName?: string;
+};
+
 type WeatherCardProps = {
   showSkeleton?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
   cityName?: string;
   weatherDescription?: string;
   weatherIcon?: string;
-  feelsLike: number;
-  temp: number;
+  feelsLike?: number;
+  temp?: number;
   isFavourite?: boolean;
+};
+
+export const WeatherCardSection = ({
+  sectionName,
+  children,
+}: PropsWithChildren<WeatherCardSectionProps>) => {
+  return (
+    <MotiView
+      animate={{
+        opacity: 1,
+      }}
+      from={{
+        opacity: 0,
+      }}
+      layout={LinearTransition}
+      transition={{
+        type: 'timing',
+      }}
+    >
+      {sectionName && <Text style={styles.sectionText}>{sectionName}</Text>}
+      {children}
+    </MotiView>
+  );
 };
 
 export const WeatherCard = ({
   showSkeleton,
   containerStyle,
-  cityName = 'Minsk',
-  weatherDescription = 'clear',
+  cityName = '',
+  weatherDescription = '',
   weatherIcon = '',
-  temp = 28,
-  feelsLike = 27,
+  temp = 0,
+  feelsLike = 0,
   isFavourite,
 }: WeatherCardProps) => {
   return (
     <MotiView layout={LinearTransition} style={containerStyle}>
-      <AnimatedPressable containerStyle={styles.container}>
-        <View style={styles.infoTopRowContainer}>
-          <AnimatedPressable containerStyle={styles.cityNameContainer}>
-            <SvgAsset
-              height={32}
-              name={isFavourite ? 'StarIcon' : 'StarOutlineIcon'}
-              width={32}
-            />
-            <Text style={styles.nameText}>{cityName}</Text>
-          </AnimatedPressable>
-          <TempAmountText temp={temp} />
-        </View>
-        <View style={styles.infoBottomRowContainer}>
-          <View style={styles.conditionContainer}>
-            <FastImage
-              source={{
-                uri: `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`,
-              }}
-              style={styles.image}
-            />
-            <Text style={styles.weatherDescriptionText}>
-              {weatherDescription}
-            </Text>
+      <Skeleton colorMode="light" show={showSkeleton}>
+        <AnimatedPressable containerStyle={styles.container}>
+          <View style={styles.infoTopRowContainer}>
+            <AnimatedPressable containerStyle={styles.cityNameContainer}>
+              <SvgAsset
+                height={32}
+                name={isFavourite ? 'StarIcon' : 'StarOutlineIcon'}
+                width={32}
+              />
+              <Text style={styles.nameText}>{cityName}</Text>
+            </AnimatedPressable>
+            <TempAmountText temp={temp} />
           </View>
-          <View style={styles.conditionContainer}>
-            <Text style={styles.weatherDescriptionText}>{'Feels like: '}</Text>
-            <TempAmountText
-              fontSize={styles.weatherDescriptionText.fontSize}
-              temp={feelsLike}
-            />
+          <View style={styles.infoBottomRowContainer}>
+            <View style={styles.conditionContainer}>
+              <FastImage
+                source={{
+                  uri: `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`,
+                }}
+                style={styles.image}
+              />
+              <Text style={styles.weatherDescriptionText}>
+                {weatherDescription}
+              </Text>
+            </View>
+            <View style={styles.conditionContainer}>
+              <Text style={styles.weatherDescriptionText}>
+                {'Feels like: '}
+              </Text>
+              <TempAmountText
+                fontSize={styles.weatherDescriptionText.fontSize}
+                temp={feelsLike}
+              />
+            </View>
           </View>
-        </View>
-      </AnimatedPressable>
+        </AnimatedPressable>
+      </Skeleton>
     </MotiView>
   );
 };
@@ -105,6 +137,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 26,
     color: '#000',
+    marginLeft: 8,
     flexShrink: 1,
   },
   weatherDescriptionText: {
@@ -115,5 +148,10 @@ const styles = StyleSheet.create({
     height: 48,
     width: 48,
     borderRadius: 48,
+  },
+  sectionText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 8,
   },
 });
