@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 
 export const useDebouncedValue = (value: string, delay: number) => {
-  const [deferredValue, setDeferredValue] = useState(value);
+  const [debouncedValue, setDebouncedValue] = useState(value);
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      setDeferredValue(value);
+      setDebouncedValue(value);
     }, delay);
 
     return () => {
@@ -13,5 +13,5 @@ export const useDebouncedValue = (value: string, delay: number) => {
     };
   }, [value, delay]);
 
-  return deferredValue;
+  return debouncedValue;
 };

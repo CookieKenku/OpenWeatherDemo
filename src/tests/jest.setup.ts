@@ -1,4 +1,8 @@
+import '@testing-library/react-native/extend-expect';
+
 import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
+
+require('react-native-reanimated').setUpTests();
 
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 

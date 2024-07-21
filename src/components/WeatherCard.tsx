@@ -27,8 +27,8 @@ export const WeatherCard = ({
   cityName = '',
   weatherDescription = '',
   weatherIcon = '',
-  temp = 0,
-  feelsLike = 0,
+  temp,
+  feelsLike,
   isFavourite,
   onFavouritePress,
   onCardPress,
@@ -47,7 +47,9 @@ export const WeatherCard = ({
                 name={isFavourite ? 'StarIcon' : 'StarOutlineIcon'}
                 width={32}
               />
-              <Text style={styles.nameText}>{cityName}</Text>
+              <Text style={styles.nameText} testID="city-name">
+                {cityName}
+              </Text>
             </AnimatedPressable>
             <TempAmountText temp={temp} />
           </View>
