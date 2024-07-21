@@ -1,23 +1,11 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { SearchBarCommands, SearchBarProps } from 'react-native-screens';
-import { getWeatherByCityName } from 'src/api';
-import { useDebouncedValue } from 'src/helpers/useDebouncedValue';
+import { useRoute } from '@react-navigation/native';
+import { RootStackScreenProps } from 'src/navigation/types';
 import { WeatherDetailsView } from './WeatherDetailsView';
 
-const MIN_CHARS = 3;
+type NavigationProps = RootStackScreenProps<'WeatherDetails'>;
 
 export const WeatherDetails = () => {
-  const { setOptions } = useNavigation();
+  const { params } = useRoute<NavigationProps['route']>();
 
-  const inputRef = useRef<SearchBarCommands>();
-
-  const [inputText, setInputText] = useState('');
-
-  const deferredSearchValue = useDebouncedValue(
-    inputText,
-    inputText ? 1000 : 0,
-  );
-
-  return <WeatherDetailsView />;
+  return <WeatherDetailsView data={params.data} />;
 };
