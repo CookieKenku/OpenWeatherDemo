@@ -1,16 +1,12 @@
-import { PropsWithChildren } from 'react';
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { LinearTransition } from 'react-native-reanimated';
 import FastImage from 'react-native-fast-image';
 import { MotiView } from 'moti';
 import { Skeleton } from 'moti/skeleton';
+
 import { AnimatedPressable } from './AnimatedPressable';
 import { SvgAsset } from './SvgAsset';
 import { TempAmountText } from './TempAmountText';
-
-type WeatherCardSectionProps = {
-  sectionName?: string;
-};
 
 type WeatherCardProps = {
   showSkeleton?: boolean;
@@ -23,37 +19,6 @@ type WeatherCardProps = {
   isFavourite?: boolean;
   onFavouritePress: (cityName: string) => void;
   onCardPress: () => void;
-};
-
-export const WeatherCardSection = ({
-  sectionName,
-  children,
-}: PropsWithChildren<WeatherCardSectionProps>) => {
-  return (
-    <MotiView
-      animate={{
-        opacity: 1,
-      }}
-      exit={{
-        opacity: 0,
-      }}
-      exitTransition={{
-        type: 'timing',
-        duration: 150,
-      }}
-      from={{
-        opacity: 0,
-      }}
-      layout={LinearTransition}
-      transition={{
-        type: 'timing',
-        duration: 150,
-      }}
-    >
-      {sectionName && <Text style={styles.sectionText}>{sectionName}</Text>}
-      {children}
-    </MotiView>
-  );
 };
 
 export const WeatherCard = ({
@@ -71,10 +36,7 @@ export const WeatherCard = ({
   return (
     <MotiView layout={LinearTransition} style={containerStyle}>
       <Skeleton colorMode="light" show={showSkeleton}>
-        <AnimatedPressable
-          containerStyle={styles.container}
-          onPress={onCardPress}
-        >
+        <AnimatedPressable containerStyle={styles.container} onPress={onCardPress}>
           <View style={styles.infoTopRowContainer}>
             <AnimatedPressable
               containerStyle={styles.cityNameContainer}
@@ -97,18 +59,11 @@ export const WeatherCard = ({
                 }}
                 style={styles.image}
               />
-              <Text style={styles.weatherDescriptionText}>
-                {weatherDescription}
-              </Text>
+              <Text style={styles.weatherDescriptionText}>{weatherDescription}</Text>
             </View>
             <View style={styles.conditionContainer}>
-              <Text style={styles.weatherDescriptionText}>
-                {'Feels like: '}
-              </Text>
-              <TempAmountText
-                fontSize={styles.weatherDescriptionText.fontSize}
-                temp={feelsLike}
-              />
+              <Text style={styles.weatherDescriptionText}>{'Feels like: '}</Text>
+              <TempAmountText fontSize={styles.weatherDescriptionText.fontSize} temp={feelsLike} />
             </View>
           </View>
         </AnimatedPressable>
@@ -129,7 +84,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     shadowRadius: 8,
-    elevation: 3,
   },
   infoTopRowContainer: {
     flexDirection: 'row',
@@ -166,10 +120,5 @@ const styles = StyleSheet.create({
     height: 48,
     width: 48,
     borderRadius: 48,
-  },
-  sectionText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 8,
   },
 });

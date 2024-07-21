@@ -4,6 +4,7 @@ import {
   Coordinate,
   CurrentWeatherResponse,
   DirectGeoResponse,
+  ResponseError,
   Unit,
 } from './types';
 
@@ -49,18 +50,15 @@ const geoApi = create({
 });
 
 export const getWeatherByCityName = async (cityName: string) => {
-  const { ok, data, problem } = await weatherApi.get<CurrentWeatherResponse>(
-    '/',
-    {
-      q: cityName,
-    },
-  );
+  const { ok, data } = await weatherApi.get<CurrentWeatherResponse, ResponseError>('/', {
+    q: cityName,
+  });
   if (ok) return data;
-  else throw new Error(`${problem}: ${JSON.stringify(data)}`);
+  else throw new Error(`${data?.message}`);
 };
 
 const getCityByPosition = async ({ lat, lon }: Coordinate) => {
-  return geoApi.get<DirectGeoResponse>('/reverse', {
+  return geoApi.get<DirectGeoResponse, ResponseError>('/reverse', {
     lat,
     lon,
     limit: 1,
@@ -68,17 +66,8 @@ const getCityByPosition = async ({ lat, lon }: Coordinate) => {
 };
 
 export const getWeatherByPosition = async ({ lat, lon }: Coordinate) => {
-  const { ok, data, problem } = await getCityByPosition({ lat, lon });
-  if (ok && data?.length) {
-    return getWeatherByCityName(data[0].name);
-  } else throw new Error(`${problem}: ${JSON.stringify(data)}`);
-  // const { ok, data, problem } = await weatherApi.get<CurrentWeatherResponse>(
-  //   '/',
-  //   {
-  //     lat,
-  //     lon,
-  //   },
-  // );
-  // if (ok) return data;
-  // else throw new Error(`${problem}: ${JSON.stringify(data)}`);
+  const { ok, data } = await getCityByPosition({ lat, lon });
+  if (ok) {
+    return getWeatherByCityName(data?.[0].name || '');
+  } else throw new Error(`${data?.message}`);
 };

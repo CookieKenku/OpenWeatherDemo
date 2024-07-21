@@ -5,7 +5,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import BootSplash from 'react-native-bootsplash';
 import { RootStack } from 'src/navigation/RootStack';
-import { GeolocationProvider } from './components';
+import { GeolocationProvider, FavouriteCityProvider } from './components';
 import { queryClient } from './api';
 
 if (__DEV__) {
@@ -19,16 +19,14 @@ function App(): React.JSX.Element {
 
   return (
     <SafeAreaProvider>
-      <StatusBar
-        backgroundColor={'transparent'}
-        barStyle={'dark-content'}
-        translucent
-      />
+      <StatusBar backgroundColor={'transparent'} barStyle={'dark-content'} translucent />
       <QueryClientProvider client={queryClient}>
         <GeolocationProvider>
-          <NavigationContainer onReady={onNavigatorReady}>
-            <RootStack />
-          </NavigationContainer>
+          <FavouriteCityProvider>
+            <NavigationContainer onReady={onNavigatorReady}>
+              <RootStack />
+            </NavigationContainer>
+          </FavouriteCityProvider>
         </GeolocationProvider>
       </QueryClientProvider>
     </SafeAreaProvider>

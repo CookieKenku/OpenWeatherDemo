@@ -1,6 +1,6 @@
 import {
   createContext,
-  ReactNode,
+  PropsWithChildren,
   useCallback,
   useContext,
   useEffect,
@@ -20,10 +20,6 @@ type GeolocationContext = {
   geolocationError: GeolocationErrorData;
 };
 
-type GeolocationProviderProps = {
-  children?: ReactNode;
-};
-
 const initialState: GeolocationContext = {
   getCurrentPosition: () => {},
   position: null,
@@ -32,12 +28,9 @@ const initialState: GeolocationContext = {
 
 const GeolocationContext = createContext<GeolocationContext>(initialState);
 
-const GeolocationProvider: React.FC<GeolocationProviderProps> = ({
-  children,
-}) => {
+const GeolocationProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [position, setPosition] = useState<PositionData>(null);
-  const [geolocationError, setGeolocationError] =
-    useState<GeolocationErrorData>(null);
+  const [geolocationError, setGeolocationError] = useState<GeolocationErrorData>(null);
 
   const getCurrentPosition = useCallback(() => {
     Geolocation.getCurrentPosition(
@@ -72,9 +65,7 @@ const useGeolocation = () => {
   const context = useContext(GeolocationContext);
 
   if (!context) {
-    throw new Error(
-      'useGeolocation must be used within an GeolocationProvider',
-    );
+    throw new Error('useGeolocation must be used within an GeolocationProvider');
   }
 
   return context;

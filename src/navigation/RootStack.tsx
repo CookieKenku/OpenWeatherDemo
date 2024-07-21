@@ -15,6 +15,7 @@ export const RootStack = () => {
         headerTransparent: false,
         headerBackTitleVisible: false,
         headerTitle: HeaderLogo,
+        headerTintColor: '#000',
       }}
     >
       <Stack.Screen component={WeatherLanding} name="WeatherLanding" />

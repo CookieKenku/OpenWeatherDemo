@@ -6,19 +6,11 @@ type TempAmountTextProps = {
   temp: number;
 };
 
-export const TempAmountText = ({
-  containerStyle,
-  fontSize = 48,
-  temp,
-}: TempAmountTextProps) => {
+export const TempAmountText = ({ containerStyle, fontSize = 48, temp }: TempAmountTextProps) => {
   return (
     <View style={[containerStyle, styles.container]}>
-      <Text style={[{ fontSize }, styles.textStyle]}>
-        {`${Math.round(temp)}`}
-      </Text>
-      <Text style={[{ fontSize: Math.round(fontSize / 2) }, styles.textStyle]}>
-        {'o'}
-      </Text>
+      <Text style={[{ fontSize }, styles.textStyle]}>{`${Math.round(temp)}`}</Text>
+      <Text style={[{ fontSize: Math.round(fontSize / 2) }, styles.textStyle]}>{'o'}</Text>
     </View>
   );
 };
