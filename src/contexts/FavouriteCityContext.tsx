@@ -13,7 +13,7 @@ const initialState: FavouriteCityContext = {
 
 const FavouriteCityContext = createContext<FavouriteCityContext>(initialState);
 
-const FavouriteCityProvider: React.FC<PropsWithChildren> = ({ children }) => {
+const FavouriteCityProvider = ({ children }: PropsWithChildren) => {
   const [favouriteCity, setFavouriteCity] = useState('');
 
   useEffect(() => {

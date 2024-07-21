@@ -5,7 +5,7 @@ type SvgAssetProps = SvgProps & {
   name: SvgName;
 };
 
-export const SvgAsset: React.FC<SvgAssetProps> = ({ name, ...svgProps }) => {
+export const SvgAsset = ({ name, ...svgProps }: SvgAssetProps) => {
   const Asset = Svgs[name];
   return <Asset {...svgProps} />;
 };

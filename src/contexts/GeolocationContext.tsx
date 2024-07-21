@@ -28,7 +28,7 @@ const initialState: GeolocationContext = {
 
 const GeolocationContext = createContext<GeolocationContext>(initialState);
 
-const GeolocationProvider: React.FC<PropsWithChildren> = ({ children }) => {
+const GeolocationProvider = ({ children }: PropsWithChildren) => {
   const [position, setPosition] = useState<PositionData>(null);
   const [geolocationError, setGeolocationError] = useState<GeolocationErrorData>(null);
 

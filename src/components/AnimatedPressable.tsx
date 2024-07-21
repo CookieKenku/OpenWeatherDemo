@@ -16,13 +16,13 @@ export type AnimatedPressableProps = PropsWithChildren<
 
 const PressableAnimatedComponent = Animated.createAnimatedComponent(Pressable);
 
-export const AnimatedPressable: React.FC<AnimatedPressableProps> = ({
+export const AnimatedPressable = ({
   children,
   onPressIn,
   onPressOut,
   containerStyle,
   ...props
-}) => {
+}: AnimatedPressableProps) => {
   const opacityAnimated = useSharedValue(1);
 
   const fadeIn = () => {

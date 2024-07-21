@@ -12,7 +12,7 @@ if (__DEV__) {
   require('./reactotron.config');
 }
 
-function App(): React.JSX.Element {
+const App = () => {
   const onNavigatorReady = useCallback(() => {
     BootSplash.hide({ fade: true });
   }, []);
@@ -31,6 +31,6 @@ function App(): React.JSX.Element {
       </QueryClientProvider>
     </SafeAreaProvider>
   );
-}
+};
 
 export default App;
