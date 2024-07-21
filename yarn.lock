@@ -3501,6 +3501,7 @@ __metadata:
     react: 18.2.0
     react-native: 0.74.3
     react-native-bootsplash: ^5.5.3
+    react-native-fast-image: ^8.6.3
     react-native-linear-gradient: ^2.8.3
     react-native-reanimated: ^3.14.0
     react-native-safe-area-context: ^4.10.8
@@ -9363,6 +9364,16 @@ __metadata:
     react: ">=18.1.0"
     react-native: ">=0.70.0"
   checksum: 2a5a81078c04d0bd16b5c7ac513b44bb3bbd2090dfc86ebe351324a6eef8d40fa5bc4cf3f0477a7b9b63d804f9a997851d3cb72b219fc506c89b9752cd0cf646
+  languageName: node
+  linkType: hard
+
+"react-native-fast-image@npm:^8.6.3":
+  version: 8.6.3
+  resolution: "react-native-fast-image@npm:8.6.3"
+  peerDependencies:
+    react: ^17 || ^18
+    react-native: ">=0.60.0"
+  checksum: 29289cb6b2eae0983c8922b22e2d9de3be07322bb7991c5def19f95eadefaedb0e308ff0b38cc1d0444e8bd4fe94a7621a99a2d3d9298100bcb60b3144677234
   languageName: node
   linkType: hard
 

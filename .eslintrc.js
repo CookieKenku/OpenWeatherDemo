@@ -88,7 +88,7 @@ module.exports = {
         camelcase: [
           'warn',
           {
-            allow: [],
+            allow: ['feels_like'],
           },
         ],
         eqeqeq: ['error', 'smart'],

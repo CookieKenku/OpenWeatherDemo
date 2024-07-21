@@ -126,3 +126,14 @@ export type CurrentWeatherResponse = {
   name: string;
   cod: number;
 };
+
+export type DirectGeoResponseItem = {
+  name: string;
+  local_names: { [key: string]: string };
+  lat: number;
+  lon: number;
+  country: string;
+  state?: string;
+};
+
+export type DirectGeoResponse = DirectGeoResponseItem[];

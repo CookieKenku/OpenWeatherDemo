@@ -1,5 +1,5 @@
-import { SvgName, Svgs } from 'assets/index';
 import { SvgProps } from 'react-native-svg';
+import { SvgName, Svgs } from 'assets/index';
 
 type SvgAssetProps = SvgProps & {
   name: SvgName;

@@ -29,7 +29,7 @@ export const AnimatedPressable: React.FC<AnimatedPressableProps> = ({
   const opacityAnimated = useSharedValue(1);
 
   const fadeIn = () => {
-    opacityAnimated.value = withTiming(0.7, { duration: 150 });
+    opacityAnimated.value = withTiming(0.6, { duration: 150 });
   };
 
   const fadeOut = () => {
