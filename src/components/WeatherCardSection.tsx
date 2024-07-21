@@ -3,6 +3,7 @@ import { StyleSheet, Text } from 'react-native';
 import { LinearTransition } from 'react-native-reanimated';
 import { MotiView } from 'moti';
 import { useFavouriteCity } from 'src/contexts';
+import { Skeleton } from 'moti/skeleton';
 import { CurrentWeatherResponse } from 'src/api/types';
 import { WeatherCard } from './WeatherCard';
 
@@ -25,8 +26,7 @@ export const WeatherCardSection = ({
 
   const onFavouritePress = useCallback(
     (cityName: string) => {
-      if (favouriteCity === cityName) setFavouriteCity('');
-      else setFavouriteCity(cityName);
+      setFavouriteCity(favouriteCity === cityName ? '' : cityName);
     },
     [favouriteCity, setFavouriteCity],
   );
@@ -34,8 +34,6 @@ export const WeatherCardSection = ({
   const onWeatherCardPress = useCallback(() => {
     if (data) onCardPress(data);
   }, [data, onCardPress]);
-
-  if (!data && !isLoading && !errorMessage) return null;
 
   return (
     <MotiView
@@ -62,17 +60,18 @@ export const WeatherCardSection = ({
       {errorMessage ? (
         <Text style={styles.errorText}>{errorMessage}</Text>
       ) : (
-        <WeatherCard
-          cityName={data?.name}
-          feelsLike={data?.main.feels_like}
-          isFavourite={favouriteCity === data?.name}
-          onCardPress={onWeatherCardPress}
-          onFavouritePress={onFavouritePress}
-          showSkeleton={isLoading}
-          temp={data?.main.temp}
-          weatherDescription={data?.weather?.[0].description}
-          weatherIcon={data?.weather?.[0].icon}
-        />
+        <Skeleton colorMode="light" show={isLoading}>
+          <WeatherCard
+            cityName={data?.name}
+            feelsLike={data?.main.feels_like}
+            isFavourite={favouriteCity === data?.name}
+            onCardPress={onWeatherCardPress}
+            onFavouritePress={onFavouritePress}
+            temp={data?.main.temp}
+            weatherDescription={data?.weather?.[0].description}
+            weatherIcon={data?.weather?.[0].icon}
+          />
+        </Skeleton>
       )}
     </MotiView>
   );

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { PropsWithChildren } from 'react';
 import {
   GestureResponderEvent,
   Pressable,
@@ -8,10 +8,11 @@ import {
 } from 'react-native';
 import Animated, { withTiming, useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
 
-export type AnimatedPressableProps = Omit<PressableProps, 'style'> & {
-  containerStyle?: StyleProp<ViewStyle>;
-  children?: ReactNode;
-};
+export type AnimatedPressableProps = PropsWithChildren<
+  Omit<PressableProps, 'style'> & {
+    containerStyle?: StyleProp<ViewStyle>;
+  }
+>;
 
 const PressableAnimatedComponent = Animated.createAnimatedComponent(Pressable);
 

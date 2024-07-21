@@ -1,18 +1,21 @@
 import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { skipToken, useQuery } from '@tanstack/react-query';
-import { SearchBarCommands, SearchBarProps } from 'react-native-screens';
+import { SearchBarCommands } from 'react-native-screens';
 import { getWeatherByCityName, getWeatherByPosition } from 'src/api';
 import { useFavouriteCity, useGeolocation } from 'src/contexts';
 import { useDebouncedValue } from 'src/helpers/useDebouncedValue';
 import { CurrentWeatherResponse } from 'src/api/types';
+import { RootStackScreenProps } from 'src/navigation/types';
 import { WeatherLandingView } from './WeatherLandingView';
 
 const MIN_CHARS = 3;
 
+type NavigationProps = RootStackScreenProps<'WeatherLanding'>;
+
 export const WeatherLanding = () => {
-  const inputRef = useRef<SearchBarCommands>();
-  const { setOptions, navigate } = useNavigation();
+  const inputRef = useRef<SearchBarCommands>(null);
+  const { setOptions, navigate } = useNavigation<NavigationProps['navigation']>();
   const { position } = useGeolocation();
   const { favouriteCity } = useFavouriteCity();
 
@@ -33,7 +36,7 @@ export const WeatherLanding = () => {
         onChangeText: e => {
           setInputText(e.nativeEvent.text);
         },
-      } as SearchBarProps,
+      },
     });
   }, [setOptions]);
 
@@ -58,9 +61,10 @@ export const WeatherLanding = () => {
     error: searchLocationWeatherError,
   } = useQuery({
     queryKey: ['getWeatherByCityName', debouncedSearchValue],
-    queryFn: debouncedSearchValue
-      ? async () => await getWeatherByCityName(debouncedSearchValue)
-      : skipToken,
+    queryFn:
+      debouncedSearchValue?.length >= MIN_CHARS
+        ? async () => await getWeatherByCityName(debouncedSearchValue)
+        : skipToken,
   });
 
   const {
@@ -87,8 +91,11 @@ export const WeatherLanding = () => {
       geolocationWeather={geolocationWeather}
       geolocationWeatherError={geolocationWeatherError?.message}
       isFavouriteLocationWeatherLoading={isFavouriteLocationWeatherLoading}
+      isFavouriteSectionEnabled={!!favouriteCity}
+      isGeolocationSectionEnabled={!!position}
       isGeolocationWeatherLoading={isGeocationWeatherLoading}
       isSearchLocationWeatherLoading={isSearchLocationWeatherLoading}
+      isSearchSectionEnabled={debouncedSearchValue?.length >= MIN_CHARS}
       onCardPress={onCardPress}
       searchLocationWeather={searchLocationWeather}
       searchLocationWeatherError={searchLocationWeatherError?.message}

@@ -1,24 +1,23 @@
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import { formatTempValue } from 'src/helpers/formatTempValue';
 
-type WeatherCardDetailedProps = {
-  containerStyle?: StyleProp<ViewStyle>;
-  cityName?: string;
-  temp?: number;
-  weatherDescription?: string;
-  weatherIcon?: string;
-  feelsLike?: number;
-  windSpeed?: number;
-  pressure?: number;
-  humidity?: number;
-  visibility?: number;
-};
+type WeatherCardDetailedProps = Partial<{
+  cityName: string;
+  temp: number;
+  weatherDescription: string;
+  weatherIcon: string;
+  feelsLike: number;
+  windSpeed: number;
+  pressure: number;
+  humidity: number;
+  visibility: number;
+}>;
 
 export const WeatherCardDetailed = ({
-  containerStyle,
-  cityName,
+  cityName = '',
+  weatherDescription = '',
   temp,
-  weatherDescription,
   weatherIcon,
   feelsLike,
   windSpeed,
@@ -27,17 +26,19 @@ export const WeatherCardDetailed = ({
   visibility,
 }: WeatherCardDetailedProps) => {
   return (
-    <View style={[containerStyle, styles.container]}>
+    <View style={styles.container}>
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>{cityName}</Text>
         <View style={styles.rowContainer}>
-          <Text style={styles.tempText}>{`${temp}°`}</Text>
-          <FastImage
-            source={{
-              uri: `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`,
-            }}
-            style={styles.image}
-          />
+          <Text style={styles.tempText}>{formatTempValue(temp)}</Text>
+          {weatherIcon && (
+            <FastImage
+              source={{
+                uri: `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`,
+              }}
+              style={styles.image}
+            />
+          )}
         </View>
         <Text style={styles.descriptionText}>{weatherDescription}</Text>
       </View>
@@ -45,7 +46,7 @@ export const WeatherCardDetailed = ({
       <View style={styles.descriptionItemsContainer}>
         <View style={styles.rowItemContainer}>
           <Text style={styles.rowTitleText}>{'Feels like'}</Text>
-          <Text style={styles.rowValueText}>{`${feelsLike}°`}</Text>
+          <Text style={styles.rowValueText}>{formatTempValue(feelsLike)}</Text>
         </View>
         <View style={styles.rowItemContainer}>
           <Text style={styles.rowTitleText}>{'Wind speed'}</Text>

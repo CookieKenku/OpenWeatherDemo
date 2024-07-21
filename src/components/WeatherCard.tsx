@@ -1,73 +1,61 @@
-import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
-import { LinearTransition } from 'react-native-reanimated';
+import { StyleSheet, Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { MotiView } from 'moti';
-import { Skeleton } from 'moti/skeleton';
+import { formatTempValue } from 'src/helpers/formatTempValue';
 import { AnimatedPressable } from './AnimatedPressable';
 import { SvgAsset } from './SvgAsset';
 
-type WeatherCardProps = {
-  showSkeleton?: boolean;
-  containerStyle?: StyleProp<ViewStyle>;
-  cityName?: string;
-  weatherDescription?: string;
-  weatherIcon?: string;
-  feelsLike?: number;
-  temp?: number;
-  isFavourite?: boolean;
+type WeatherCardProps = Partial<{
+  cityName: string;
+  weatherDescription: string;
+  weatherIcon: string;
+  feelsLike: number;
+  temp: number;
+  isFavourite: boolean;
   onFavouritePress: (cityName: string) => void;
   onCardPress: () => void;
-};
+}>;
 
 export const WeatherCard = ({
-  showSkeleton,
-  containerStyle,
   cityName = '',
   weatherDescription = '',
-  weatherIcon = '',
+  weatherIcon,
   temp,
   feelsLike,
   isFavourite,
-  onFavouritePress,
-  onCardPress,
+  onFavouritePress = () => {},
+  onCardPress = () => {},
 }: WeatherCardProps) => {
   return (
-    <MotiView layout={LinearTransition} style={containerStyle}>
-      <Skeleton colorMode="light" show={showSkeleton}>
-        <AnimatedPressable containerStyle={styles.container} onPress={onCardPress}>
-          <View style={styles.infoTopRowContainer}>
-            <AnimatedPressable
-              containerStyle={styles.cityNameContainer}
-              onPress={() => onFavouritePress(cityName)}
-            >
-              <SvgAsset
-                height={32}
-                name={isFavourite ? 'StarIcon' : 'StarOutlineIcon'}
-                width={32}
-              />
-              <Text style={styles.nameText} testID="city-name">
-                {cityName}
-              </Text>
-            </AnimatedPressable>
-            <Text style={styles.tempText}>{`${temp ?? '-'}°`}</Text>
-          </View>
-          <View style={styles.infoBottomRowContainer}>
-            <View style={styles.conditionContainer}>
-              <FastImage
-                source={{
-                  uri: `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`,
-                }}
-                style={styles.image}
-              />
-              <Text style={styles.weatherDescriptionText}>{weatherDescription}</Text>
-            </View>
-            <View style={styles.conditionContainer}>
-              <Text style={styles.weatherDescriptionText}>{`Feels like: ${feelsLike}°`}</Text>
-            </View>
-          </View>
+    <AnimatedPressable containerStyle={styles.container} onPress={onCardPress}>
+      <View style={styles.infoTopRowContainer}>
+        <AnimatedPressable
+          containerStyle={styles.cityNameContainer}
+          onPress={() => onFavouritePress(cityName)}
+        >
+          <SvgAsset height={32} name={isFavourite ? 'StarIcon' : 'StarOutlineIcon'} width={32} />
+          <Text style={styles.nameText} testID="city-name">
+            {cityName}
+          </Text>
         </AnimatedPressable>
-      </Skeleton>
-    </MotiView>
+        <Text style={styles.tempText}>{formatTempValue(temp)}</Text>
+      </View>
+      <View style={styles.infoBottomRowContainer}>
+        <View style={styles.conditionContainer}>
+          {weatherIcon && (
+            <FastImage
+              source={{
+                uri: `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`,
+              }}
+              style={styles.image}
+            />
+          )}
+          <Text style={styles.weatherDescriptionText}>{weatherDescription}</Text>
+        </View>
+        <Text style={styles.weatherDescriptionText}>
+          {`Feels like: ${formatTempValue(feelsLike)}`}
+        </Text>
+      </View>
+    </AnimatedPressable>
   );
 };
 
