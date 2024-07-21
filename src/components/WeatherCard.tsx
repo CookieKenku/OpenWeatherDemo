@@ -21,6 +21,8 @@ type WeatherCardProps = {
   feelsLike?: number;
   temp?: number;
   isFavourite?: boolean;
+  onFavouritePress: (cityName: string) => void;
+  onCardPress: () => void;
 };
 
 export const WeatherCardSection = ({
@@ -32,12 +34,20 @@ export const WeatherCardSection = ({
       animate={{
         opacity: 1,
       }}
+      exit={{
+        opacity: 0,
+      }}
+      exitTransition={{
+        type: 'timing',
+        duration: 150,
+      }}
       from={{
         opacity: 0,
       }}
       layout={LinearTransition}
       transition={{
         type: 'timing',
+        duration: 150,
       }}
     >
       {sectionName && <Text style={styles.sectionText}>{sectionName}</Text>}
@@ -55,13 +65,21 @@ export const WeatherCard = ({
   temp = 0,
   feelsLike = 0,
   isFavourite,
+  onFavouritePress,
+  onCardPress,
 }: WeatherCardProps) => {
   return (
     <MotiView layout={LinearTransition} style={containerStyle}>
       <Skeleton colorMode="light" show={showSkeleton}>
-        <AnimatedPressable containerStyle={styles.container}>
+        <AnimatedPressable
+          containerStyle={styles.container}
+          onPress={onCardPress}
+        >
           <View style={styles.infoTopRowContainer}>
-            <AnimatedPressable containerStyle={styles.cityNameContainer}>
+            <AnimatedPressable
+              containerStyle={styles.cityNameContainer}
+              onPress={() => onFavouritePress(cityName)}
+            >
               <SvgAsset
                 height={32}
                 name={isFavourite ? 'StarIcon' : 'StarOutlineIcon'}

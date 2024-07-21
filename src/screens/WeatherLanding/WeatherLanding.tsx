@@ -1,10 +1,10 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { skipToken, useQuery } from '@tanstack/react-query';
 import { SearchBarCommands, SearchBarProps } from 'react-native-screens';
 import { getWeatherByCityName, getWeatherByPosition } from 'src/api';
 import { useDebouncedValue } from 'src/helpers/useDebouncedValue';
-import { CurrentWeatherResponse } from 'src/api/types';
+import { useFavouriteCity } from 'src/helpers/useFavouriteCity';
 import { useGeolocation } from 'src/components';
 import { WeatherLandingView } from './WeatherLandingView';
 
@@ -14,6 +14,7 @@ export const WeatherLanding = () => {
   const inputRef = useRef<SearchBarCommands>();
   const { setOptions, navigate } = useNavigation();
   const { position } = useGeolocation();
+  const { favouriteCity, setFavouriteCity } = useFavouriteCity();
 
   const [inputText, setInputText] = useState('');
 
@@ -39,20 +40,20 @@ export const WeatherLanding = () => {
     });
   }, [setOptions]);
 
-  // const { isLoading: isGeocationWeatherLoading, data: geolocationWeather } =
-  //   useQuery({
-  //     queryKey: ['geolocationWeather', position],
-  //     queryFn: position
-  //       ? async () =>
-  //           await getWeatherByPosition({
-  //             lat: position.latitude,
-  //             lon: position.longitude,
-  //           })
-  //       : skipToken,
-  //   });
+  const { isLoading: isGeocationWeatherLoading, data: geolocationWeather } =
+    useQuery({
+      queryKey: ['geolocationWeather', position],
+      queryFn: position
+        ? async () =>
+            await getWeatherByPosition({
+              lat: position.latitude,
+              lon: position.longitude,
+            })
+        : skipToken,
+    });
 
   const {
-    isLoading: issearchLocationWeatherLoading,
+    isLoading: isSearchLocationWeatherLoading,
     data: searchLocationWeather,
   } = useQuery({
     queryKey: ['searchLocationWeather', deferredSearchValue],
@@ -61,42 +62,52 @@ export const WeatherLanding = () => {
       : skipToken,
   });
 
-  // useEffect(() => {
-  //   console.tron(geolocationWeather);
-  // }, [geolocationWeather]);
+  const {
+    isLoading: isFavouriteLocationWeatherLoading,
+    data: favouriteLocationWeather,
+  } = useQuery({
+    queryKey: ['favouriteLocationWeather', favouriteCity],
+    queryFn: favouriteCity
+      ? async () => await getWeatherByCityName(favouriteCity)
+      : skipToken,
+  });
 
-  useEffect(() => {
-    console.tron(searchLocationWeather);
-  }, [searchLocationWeather]);
-  // useEffect(() => {
-  //   if (deferredSearchValue.length >= MIN_CHARS)
-  //     (async () => {
-  //       const { ok, data, problem } =
-  //         await getWeatherByCityName(deferredSearchValue);
-  //       console.tron(ok, data, problem);
-  //     })();
-  // }, [deferredSearchValue]);
+  // const geolocationWeatherMock: Partial<CurrentWeatherResponse> = {
+  //   name: 'Warsaw',
+  //   weather: [
+  //     {
+  //       description: 'few clouds',
+  //       icon: '02d',
+  //     },
+  //   ],
+  //   main: {
+  //     temp: 29.89,
+  //     feels_like: 28.29,
+  //   },
+  // };
 
-  const geolocationWeatherMock: Partial<CurrentWeatherResponse> = {
-    name: 'Warsaw',
-    weather: [
-      {
-        description: 'few clouds',
-        icon: '02d',
-      },
-    ],
-    main: {
-      temp: 29.89,
-      feels_like: 28.29,
+  const onFavouritePress = useCallback(
+    (cityName: string) => {
+      if (favouriteCity === cityName) setFavouriteCity('');
+      else setFavouriteCity(cityName);
     },
-  };
+    [favouriteCity, setFavouriteCity],
+  );
+
+  const onCardPress = useCallback(() => {
+    navigate('WeatherDetails');
+  }, [navigate]);
 
   return (
     <WeatherLandingView
-      geolocationWeather={geolocationWeatherMock}
-      isGeolocationWeatherLoading={false}
-      isSearchLocationWeatherLoading={issearchLocationWeatherLoading}
-      onLocationPress={() => {}}
+      favouriteCity={favouriteCity}
+      favouriteLocationWeather={favouriteLocationWeather}
+      geolocationWeather={geolocationWeather}
+      isFavouriteLocationWeatherLoading={isFavouriteLocationWeatherLoading}
+      isGeolocationWeatherLoading={isGeocationWeatherLoading}
+      isSearchLocationWeatherLoading={isSearchLocationWeatherLoading}
+      onCardPress={onCardPress}
+      onFavouritePress={onFavouritePress}
       searchLocationWeather={searchLocationWeather}
     />
   );
