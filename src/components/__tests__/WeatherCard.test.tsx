@@ -3,20 +3,35 @@ import { WeatherCard } from '../WeatherCard';
 
 describe('WeatherCard', () => {
   it.each([
-    ['Warsaw', 20, 30, 'Sunny', 'Warsaw', '20°', '30°', 'Sunny'],
-    [undefined, 20, 30, 'Sunny', '', '20°', '30°', 'Sunny'],
-    ['Warsaw', undefined, 30, 'Sunny', 'Warsaw', '-', '30°', 'Sunny'],
+    [undefined, 'Sunny', 200, -100, '', 'Sunny', '200°', '-100°'],
+    ['Warsaw', undefined, -100, 200, 'Warsaw', '', '-100°', '200°'],
+    ['Warsaw', 'Sunny', undefined, -100.1, 'Warsaw', 'Sunny', '-°', '-100°'],
+    ['Warsaw', 'Sunny', 199.6, undefined, 'Warsaw', 'Sunny', '200°', '-°'],
   ] as const)(
-    'renders correctly with city=%s feelsLike=%s',
-    (city, feelsLike, temp, desc, cityOutput, feelLikeOutput, tempOutput, descOutput) => {
+    'renders correctly with cityName=%s weatherDescription=%s temp=%s feelsLike=%s',
+    (
+      city,
+      description,
+      temp,
+      feelsLike,
+      cityExpected,
+      descriptionExpected,
+      tempExpected,
+      feelsLikeExpected,
+    ) => {
       render(
-        <WeatherCard cityName={city} feelsLike={feelsLike} temp={temp} weatherDescription={desc} />,
+        <WeatherCard
+          cityName={city}
+          feelsLike={feelsLike}
+          temp={temp}
+          weatherDescription={description}
+        />,
       );
 
-      expect(screen.getByTestId('city-name')).toHaveTextContent(cityOutput);
-      expect(screen.getByText(feelLikeOutput)).toBeOnTheScreen();
-      expect(screen.getByText(tempOutput)).toBeOnTheScreen();
-      expect(screen.getByText(descOutput)).toBeOnTheScreen();
+      expect(screen.getByTestId('city-name')).toHaveTextContent(cityExpected);
+      expect(screen.getByText(descriptionExpected)).toBeOnTheScreen();
+      expect(screen.getByText(tempExpected)).toBeOnTheScreen();
+      expect(screen.getByText(feelsLikeExpected, { exact: false })).toBeOnTheScreen();
     },
   );
 

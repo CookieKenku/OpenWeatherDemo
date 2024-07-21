@@ -6,10 +6,10 @@ describe('formatTempValue', () => {
     [10.1, '10°'],
     [-1, '-1°'],
     [0, '0°'],
-  ] as const)('returns formatted value with value=%s', (value, expectedValue) => {
+  ] as const)('returns formatted value with value=%s', (value, valueExpected) => {
     const result = formatTempValue(value);
 
-    expect(result).toBe(expectedValue);
+    expect(result).toBe(valueExpected);
   });
 
   it('handles falsy value', () => {

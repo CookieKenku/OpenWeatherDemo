@@ -4,16 +4,16 @@ import { formatTempValue } from 'src/helpers/formatTempValue';
 import { AnimatedPressable } from './AnimatedPressable';
 import { SvgAsset } from './SvgAsset';
 
-type WeatherCardProps = Partial<{
-  cityName: string;
-  weatherDescription: string;
-  weatherIcon: string;
-  feelsLike: number;
-  temp: number;
-  isFavourite: boolean;
-  onFavouritePress: (cityName: string) => void;
-  onCardPress: () => void;
-}>;
+type WeatherCardProps = {
+  cityName?: string;
+  weatherDescription?: string;
+  weatherIcon?: string;
+  feelsLike?: number;
+  temp?: number;
+  isFavourite?: boolean;
+  onFavouritePress?: (cityName: string) => void;
+  onCardPress?: () => void;
+};
 
 export const WeatherCard = ({
   cityName = '',

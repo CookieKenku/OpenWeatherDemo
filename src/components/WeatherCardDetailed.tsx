@@ -2,17 +2,17 @@ import { StyleSheet, Text, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { formatTempValue } from 'src/helpers/formatTempValue';
 
-type WeatherCardDetailedProps = Partial<{
-  cityName: string;
-  temp: number;
-  weatherDescription: string;
-  weatherIcon: string;
-  feelsLike: number;
-  windSpeed: number;
-  pressure: number;
-  humidity: number;
-  visibility: number;
-}>;
+type WeatherCardDetailedProps = {
+  cityName?: string;
+  temp?: number;
+  weatherDescription?: string;
+  weatherIcon?: string;
+  feelsLike?: number;
+  windSpeed?: number;
+  pressure?: number;
+  humidity?: number;
+  visibility?: number;
+};
 
 export const WeatherCardDetailed = ({
   cityName = '',
