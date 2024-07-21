@@ -4,7 +4,6 @@ jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
 jest.mock('react-native-bootsplash', () => {
   return {
-    __esModule: true,
     hide: jest.fn(),
     show: jest.fn(),
   };
@@ -12,7 +11,6 @@ jest.mock('react-native-bootsplash', () => {
 
 jest.mock('@react-native-community/geolocation', () => {
   return {
-    __esModule: true,
     addListener: jest.fn(),
     getCurrentPosition: jest.fn(),
     removeListeners: jest.fn(),
