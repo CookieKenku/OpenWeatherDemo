@@ -3,10 +3,8 @@ import { LinearTransition } from 'react-native-reanimated';
 import FastImage from 'react-native-fast-image';
 import { MotiView } from 'moti';
 import { Skeleton } from 'moti/skeleton';
-
 import { AnimatedPressable } from './AnimatedPressable';
 import { SvgAsset } from './SvgAsset';
-import { TempAmountText } from './TempAmountText';
 
 type WeatherCardProps = {
   showSkeleton?: boolean;
@@ -51,7 +49,7 @@ export const WeatherCard = ({
                 {cityName}
               </Text>
             </AnimatedPressable>
-            <TempAmountText temp={temp} />
+            <Text style={styles.tempText}>{`${temp ?? '-'}°`}</Text>
           </View>
           <View style={styles.infoBottomRowContainer}>
             <View style={styles.conditionContainer}>
@@ -64,8 +62,7 @@ export const WeatherCard = ({
               <Text style={styles.weatherDescriptionText}>{weatherDescription}</Text>
             </View>
             <View style={styles.conditionContainer}>
-              <Text style={styles.weatherDescriptionText}>{'Feels like: '}</Text>
-              <TempAmountText fontSize={styles.weatherDescriptionText.fontSize} temp={feelsLike} />
+              <Text style={styles.weatherDescriptionText}>{`Feels like: ${feelsLike}°`}</Text>
             </View>
           </View>
         </AnimatedPressable>
@@ -122,5 +119,10 @@ const styles = StyleSheet.create({
     height: 48,
     width: 48,
     borderRadius: 48,
+  },
+  tempText: {
+    fontSize: 48,
+    color: '#000',
+    fontWeight: 'bold',
   },
 });

@@ -3,9 +3,9 @@ import { useNavigation } from '@react-navigation/native';
 import { skipToken, useQuery } from '@tanstack/react-query';
 import { SearchBarCommands, SearchBarProps } from 'react-native-screens';
 import { getWeatherByCityName, getWeatherByPosition } from 'src/api';
+import { useFavouriteCity, useGeolocation } from 'src/contexts';
 import { useDebouncedValue } from 'src/helpers/useDebouncedValue';
 import { CurrentWeatherResponse } from 'src/api/types';
-import { useFavouriteCity, useGeolocation } from 'src/components';
 import { WeatherLandingView } from './WeatherLandingView';
 
 const MIN_CHARS = 3;
@@ -18,7 +18,7 @@ export const WeatherLanding = () => {
 
   const [inputText, setInputText] = useState('');
 
-  const deferredSearchValue = useDebouncedValue(inputText, inputText ? 1000 : 0);
+  const debouncedSearchValue = useDebouncedValue(inputText, inputText ? 1000 : 0);
 
   useLayoutEffect(() => {
     setOptions({
@@ -42,7 +42,7 @@ export const WeatherLanding = () => {
     data: geolocationWeather,
     error: geolocationWeatherError,
   } = useQuery({
-    queryKey: ['geolocationWeather', position],
+    queryKey: ['getWeatherByPosition', position],
     queryFn: position
       ? async () =>
           await getWeatherByPosition({
@@ -57,9 +57,9 @@ export const WeatherLanding = () => {
     data: searchLocationWeather,
     error: searchLocationWeatherError,
   } = useQuery({
-    queryKey: ['searchLocationWeather', deferredSearchValue],
-    queryFn: deferredSearchValue
-      ? async () => await getWeatherByCityName(deferredSearchValue)
+    queryKey: ['getWeatherByCityName', debouncedSearchValue],
+    queryFn: debouncedSearchValue
+      ? async () => await getWeatherByCityName(debouncedSearchValue)
       : skipToken,
   });
 
@@ -68,23 +68,9 @@ export const WeatherLanding = () => {
     data: favouriteLocationWeather,
     error: favouriteLocationWeatherError,
   } = useQuery({
-    queryKey: ['favouriteLocationWeather', favouriteCity],
+    queryKey: ['getWeatherByCityName', favouriteCity],
     queryFn: favouriteCity ? async () => await getWeatherByCityName(favouriteCity) : skipToken,
   });
-
-  // const geolocationWeatherMock: Partial<CurrentWeatherResponse> = {
-  //   name: 'Warsaw',
-  //   weather: [
-  //     {
-  //       description: 'few clouds',
-  //       icon: '02d',
-  //     },
-  //   ],
-  //   main: {
-  //     temp: 29.89,
-  //     feels_like: 28.29,
-  //   },
-  // };
 
   const onCardPress = useCallback(
     (data: CurrentWeatherResponse) => {

@@ -5,7 +5,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import BootSplash from 'react-native-bootsplash';
 import { RootStack } from 'src/navigation/RootStack';
-import { GeolocationProvider, FavouriteCityProvider } from './components';
+import { GeolocationProvider, FavouriteCityProvider } from './contexts';
 import { queryClient } from './api';
 
 if (__DEV__) {

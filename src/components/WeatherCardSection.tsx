@@ -2,8 +2,8 @@ import { useCallback } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { LinearTransition } from 'react-native-reanimated';
 import { MotiView } from 'moti';
+import { useFavouriteCity } from 'src/contexts';
 import { CurrentWeatherResponse } from 'src/api/types';
-import { useFavouriteCity } from './FavouriteCityContext';
 import { WeatherCard } from './WeatherCard';
 
 type WeatherCardSectionProps = {

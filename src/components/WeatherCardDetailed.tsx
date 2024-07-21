@@ -1,6 +1,5 @@
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import { TempAmountText } from './TempAmountText';
 
 type WeatherCardDetailedProps = {
   containerStyle?: StyleProp<ViewStyle>;
@@ -32,7 +31,7 @@ export const WeatherCardDetailed = ({
       <View style={styles.titleContainer}>
         <Text style={styles.titleText}>{cityName}</Text>
         <View style={styles.rowContainer}>
-          <TempAmountText fontSize={64} temp={temp} />
+          <Text style={styles.tempText}>{`${temp}°`}</Text>
           <FastImage
             source={{
               uri: `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`,
@@ -46,7 +45,7 @@ export const WeatherCardDetailed = ({
       <View style={styles.descriptionItemsContainer}>
         <View style={styles.rowItemContainer}>
           <Text style={styles.rowTitleText}>{'Feels like'}</Text>
-          <TempAmountText fontSize={styles.rowValueText.fontSize} temp={feelsLike} />
+          <Text style={styles.rowValueText}>{`${feelsLike}°`}</Text>
         </View>
         <View style={styles.rowItemContainer}>
           <Text style={styles.rowTitleText}>{'Wind speed'}</Text>
@@ -62,9 +61,9 @@ export const WeatherCardDetailed = ({
         </View>
         <View style={styles.rowItemContainer}>
           <Text style={styles.rowTitleText}>{'Visibility'}</Text>
-          <Text
-            style={styles.rowValueText}
-          >{`${visibility || visibility === 0 ? visibility / 1000 : '-'} km`}</Text>
+          <Text style={styles.rowValueText}>
+            {`${visibility || visibility === 0 ? visibility / 1000 : '-'} km`}
+          </Text>
         </View>
       </View>
     </View>
@@ -110,6 +109,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#E0E0E0',
     height: 3,
     marginVertical: 16,
+  },
+  tempText: {
+    fontSize: 64,
+    color: '#000',
+    fontWeight: 'bold',
   },
   rowItemContainer: {
     flexDirection: 'row',
