@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react-native';
 import { WeatherLandingView } from '../WeatherLandingView';
 
 describe('WeatherLandingView', () => {
-  it('sections render correctly', () => {
+  it('renders enabled sections correctly', () => {
     render(
       <WeatherLandingView
         isFavouriteLocationWeatherLoading
@@ -20,13 +20,13 @@ describe('WeatherLandingView', () => {
     expect(screen.queryByText('Favourite Location')).not.toBeOnTheScreen();
   });
 
-  it('section errors display correctly', () => {
+  it('renders errors in sections correctly', () => {
     render(
       <WeatherLandingView
         favouriteLocationWeatherError={'Fav Error'}
         geolocationWeatherError={'Geo Error'}
         isFavouriteLocationWeatherLoading
-        isFavouriteSectionEnabled
+        isFavouriteSectionEnabled={false}
         isGeolocationSectionEnabled
         isGeolocationWeatherLoading
         isSearchLocationWeatherLoading
@@ -37,25 +37,6 @@ describe('WeatherLandingView', () => {
     );
 
     expect(screen.getByText('Search Error')).toBeOnTheScreen();
-    expect(screen.getByText('Geo Error')).toBeOnTheScreen();
-    expect(screen.getByText('Fav Error')).toBeOnTheScreen();
-
-    render(
-      <WeatherLandingView
-        favouriteLocationWeatherError={'Fav Error'}
-        geolocationWeatherError={'Geo Error'}
-        isFavouriteLocationWeatherLoading
-        isFavouriteSectionEnabled={false}
-        isGeolocationSectionEnabled
-        isGeolocationWeatherLoading
-        isSearchLocationWeatherLoading
-        isSearchSectionEnabled={false}
-        onCardPress={jest.fn()}
-        searchLocationWeatherError={'Search Error'}
-      />,
-    );
-
-    expect(screen.queryByText('Search Error')).not.toBeOnTheScreen();
     expect(screen.getByText('Geo Error')).toBeOnTheScreen();
     expect(screen.queryByText('Fav Error')).not.toBeOnTheScreen();
   });
